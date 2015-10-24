@@ -1,16 +1,30 @@
-var Profile = require('./profile'),
-  renderer = require('./renderer');
+// Modules
+var Profile   = require('./profile'),
+  querystring = require('querystring'),
+  renderer    = require('./renderer');
 
 var commonHeaders = {'Content-Type': 'text/html'};
 
 function home(req, res) {
   if (req.url === '/') {
-    // show search
-    res.writeHead(200, commonHeaders);
-    renderer.view('header', {}, res);
-    renderer.view('search', {}, res);
-    renderer.view('footer', {}, res);
-    res.end();
+    if (req.method.toUpperCase() === 'GET') {
+      // show search
+      res.writeHead(200, commonHeaders);
+      renderer.view('header', {}, res);
+      renderer.view('search', {}, res);
+      renderer.view('footer', {}, res);
+      res.end();
+    }
+    else if (req.method.toUpperCase() === 'POST'){
+      // if url === '/' && POST
+      // extract username
+      req.on('data', function(postBody) {
+        var query = querystring.parse(postBody.toString());
+        res.write(query.username);
+        res.end();
+      })
+      // redirect to username
+    }
   }
 }
 
@@ -26,8 +40,6 @@ function user(req, res) {
     var studentProfile = new Profile(username);
     // on 'end'
     studentProfile.on('end', function(profileJSON) {
-      // show profile
-
       // store needed values
       var values = {
         avatarUrl: profileJSON.gravatar_url,
@@ -48,7 +60,6 @@ function user(req, res) {
       renderer.view('footer', {}, res);
       res.end();
     });
-
   }
 }
 
