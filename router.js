@@ -17,13 +17,13 @@ function home(req, res) {
     }
     else if (req.method.toUpperCase() === 'POST'){
       // if url === '/' && POST
-      // extract username
       req.on('data', function(postBody) {
+        // extract username
         var query = querystring.parse(postBody.toString());
-        res.write(query.username);
+        // redirect to /:username
+        res.writeHead(303, {'Location': '/' + query.username});
         res.end();
       })
-      // redirect to username
     }
   }
 }
