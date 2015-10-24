@@ -1,10 +1,12 @@
 var Profile = require('./profile'),
   renderer = require('./renderer');
 
+var commonHeaders = {'Content-Type': 'text/html'};
+
 function home(req, res) {
   if (req.url === '/') {
     // show search
-    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.writeHead(200, commonHeaders);
     renderer.view('header', {}, res);
     renderer.view('search', {}, res);
     renderer.view('footer', {}, res);
@@ -17,8 +19,8 @@ function user(req, res) {
   var username = req.url.replace('/', '');
   // Ensure there actually is a username
   if (username.length > 0) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    // renderer.view('header', {}, res);
+    res.writeHead(200, commonHeaders);
+    renderer.view('header', {}, res);
 
     // Get JSON from Treehouse
     var studentProfile = new Profile(username);

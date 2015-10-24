@@ -7,7 +7,6 @@ function mergeValues(values, content) {
   for (var key in values) {
     // Replace all {{key}} with value from values object
     content = content.replace("{{" + key + "}}", values[key]);
-    console.log(key);
   }
   // return merged content
   return content;
