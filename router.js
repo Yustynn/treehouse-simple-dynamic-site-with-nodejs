@@ -55,7 +55,7 @@ function user(req, res) {
 
     // handle error
     studentProfile.on('error', function(error) {
-      renderer.view('error', {errorMessage: error.message}, res);
+      renderer.view('error', {errorMessage: error.message, username: username}, res);
       renderer.view('search', {}, res);
       renderer.view('footer', {}, res);
       res.end();
